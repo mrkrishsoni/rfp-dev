@@ -8,7 +8,7 @@ import {
   Tooltip,
 } from "flowbite-react";
 import { Link, useLocation } from "react-router";
-import type { FC, SVGProps } from "react";
+import { useState, type CSSProperties, type FC, type SVGProps } from "react";
 import {
   UserAddIcon,
   ClipboardIcon,
@@ -59,9 +59,22 @@ const members = [
 
 export default function DashboardLayout({ children }: LayoutProps) {
   const { pathname } = useLocation();
+  const [isTeamSidebarOpen, setTeamSidebarOpen] = useState(true);
+  const isTeamRoute = pathname.startsWith("/team");
+  const sidebarWidth = isTeamSidebarOpen ? "240px" : "0px";
+  const layoutStyle = {
+    "--sidebar-width": sidebarWidth,
+  } as CSSProperties;
+
+  const handleTeamSidebarToggle = () => {
+    setTeamSidebarOpen((previous) => !previous);
+  };
 
   return (
-    <div className="min-h-screen grid grid-cols-[72px_240px_1fr] bg-primary text-white">
+    <div
+      className="relative min-h-[100dvh] grid bg-primary text-white [grid-template-columns:72px_1fr] md:[grid-template-columns:72px_var(--sidebar-width)_1fr]"
+      style={layoutStyle}
+    >
       {/* Sidebar A: icon rail */}
       <aside className="relative bg-black border-r border-border py-4 flex flex-col items-center">
         {/* <div className="absolute right-0 top-0 h-full w-px bg-gray-700/70" /> */}
@@ -130,42 +143,89 @@ export default function DashboardLayout({ children }: LayoutProps) {
           <Tooltip content="Account" placement="right">
             <UserIcon className="text-gray-400" />
           </Tooltip>
-          <Tooltip content="Collapse" placement="right">
-            <ChevronsLeftIcon className="text-gray-400" />
-          </Tooltip>
         </div>
       </aside>
 
       {/* Sidebar B: section navigation + list */}
-      <aside className="hidden md:flex flex-col bg-black border-r border-border max-w-60">
-        <div className="p-6 pb-3">
-          <h2 className="text-xl font-semibold">Manage Team</h2>
-          <div className="mt-4">
-            <Button
-              as={Link}
-              to="/team/invite"
-              color="yellow"
-              className="text-black gap-1"
-            >
-              <UserAddIcon size={20} /> Invite
-            </Button>
-          </div>
-        </div>
-        <Sidebar className="max-w-56">
-          <SidebarItems>
-            <SidebarItemGroup>
-              <div className="px-6 pb-2 text-sm text-gray-400">
-                Team Members
+      <aside
+        className={`hidden md:flex h-full flex-col bg-black border-r border-border transition-all duration-300 ${
+          isTeamSidebarOpen
+            ? "w-[var(--sidebar-width)] opacity-100"
+            : "w-0 opacity-0 pointer-events-none border-transparent"
+        }`}
+        aria-expanded={isTeamSidebarOpen}
+        aria-hidden={!isTeamSidebarOpen}
+      >
+        {isTeamSidebarOpen ? (
+          <div className="flex h-full flex-col">
+            {isTeamRoute ? (
+              <>
+                <div className="p-6 pb-3">
+                  <h2 className="text-xl font-semibold">Manage Team</h2>
+                  <div className="mt-4">
+                    <Button
+                      as={Link}
+                      to="/team/invite"
+                      color="yellow"
+                      className="text-black gap-1"
+                    >
+                      <UserAddIcon size={20} /> Invite
+                    </Button>
+                  </div>
+                </div>
+                <Sidebar className="max-w-56">
+                  <SidebarItems>
+                    <SidebarItemGroup>
+                      <div className="px-6 pb-2 text-sm text-gray-400">
+                        Team Members
+                      </div>
+                      {members.map((m) => (
+                        <SidebarItem
+                          key={m.email}
+                          href="#"
+                          className="!text-w1"
+                        >
+                          {m.name}
+                        </SidebarItem>
+                      ))}
+                    </SidebarItemGroup>
+                  </SidebarItems>
+                </Sidebar>
+              </>
+            ) : (
+              <div className="flex flex-1 flex-col items-center justify-center px-6 text-center">
+                <h2 className="text-lg font-semibold text-w1">Coming Soon</h2>
+                <p className="mt-2 text-sm text-text1">
+                  Sidebar content for this section will be available soon.
+                </p>
               </div>
-              {members.map((m) => (
-                <SidebarItem key={m.email} href="#" className="!text-w1">
-                  {m.name}
-                </SidebarItem>
-              ))}
-            </SidebarItemGroup>
-          </SidebarItems>
-        </Sidebar>
+            )}
+            <div className="mt-auto p-6 pt-3 flex justify-start">
+              <button
+                type="button"
+                onClick={handleTeamSidebarToggle}
+                className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-border text-gray-400 transition hover:border-hover hover:text-white"
+                aria-label="Collapse team sidebar"
+              >
+                <ChevronsLeftIcon className="h-5 w-5" />
+              </button>
+            </div>
+          </div>
+        ) : null}
       </aside>
+
+      {!isTeamSidebarOpen ? (
+        <div className="absolute bottom-4 left-20 z-10">
+          <button
+            type="button"
+            onClick={handleTeamSidebarToggle}
+            className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-black/80 text-gray-400 backdrop-blur transition hover:border-hover hover:text-white"
+            aria-label="Expand team sidebar"
+          >
+            <ChevronsLeftIcon className="h-5 w-5 rotate-180" />
+          </button>
+        </div>
+      ) : null}
 
       {/* Main content */}
       <main className="p-4 md:p-6 lg:p-8 w-full">{children}</main>

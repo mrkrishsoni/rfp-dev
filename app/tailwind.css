@@ -7,4 +7,16 @@
   body {
     @apply bg-primary text-white;
   }
+
+  select {
+    @apply text-white;
+  }
+
+  select option {
+    @apply bg-secondary text-text1 whitespace-pre-line leading-snug;
+  }
+
+  select option::first-line {
+    @apply font-semibold text-w1;
+  }
 }

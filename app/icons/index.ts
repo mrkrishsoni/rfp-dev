@@ -11,3 +11,5 @@ export { default as ChartPieIcon } from "./ChartPieIcon";
 export { default as UserIcon } from "./UserIcon";
 export { default as ChevronsLeftIcon } from "./ChevronsLeftIcon";
 export { default as SearchIcon } from "./SearchIcon";
+export { default as CloseIcon } from "./CloseIcon";
+export { default as MailIcon } from "./MailIcon";
