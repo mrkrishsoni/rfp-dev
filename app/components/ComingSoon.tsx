@@ -1,5 +1,4 @@
 import { Button } from "flowbite-react";
-import { CaretLeft } from "flowbite-react-icons/outline";
 import { Link, useLocation } from "react-router";
 
 export default function ComingSoon() {
@@ -11,7 +10,7 @@ export default function ComingSoon() {
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-semibold capitalize">{title}</h1>
         <Button as={Link} to="/team" color="light" pill>
-          <CaretLeft className="mr-2" /> Back to Team
+          Back to Team
         </Button>
       </div>
       <div className="rounded-lg border border-gray-800 bg-black p-8 text-center">
