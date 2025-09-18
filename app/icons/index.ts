@@ -1,0 +1,13 @@
+export type { IconProps } from "./types";
+export { default as UserAddIcon } from "./UserAddIcon";
+export { default as ClipboardIcon } from "./ClipboardIcon";
+export { default as FolderIcon } from "./FolderIcon";
+export { default as GridIcon } from "./GridIcon";
+export { default as UsersGroupIcon } from "./UsersGroupIcon";
+export { default as WandIcon } from "./WandIcon";
+export { default as EditBrushIcon } from "./EditBrushIcon";
+export { default as PenIcon } from "./PenIcon";
+export { default as ChartPieIcon } from "./ChartPieIcon";
+export { default as UserIcon } from "./UserIcon";
+export { default as ChevronsLeftIcon } from "./ChevronsLeftIcon";
+export { default as SearchIcon } from "./SearchIcon";

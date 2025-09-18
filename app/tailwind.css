@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global base */
+@layer base {
+  body {
+    @apply bg-primary text-white;
+  }
+}
